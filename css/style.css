@@ -392,6 +392,7 @@ a { color: inherit; text-decoration: none; }
 /* Rangee de 3 photos en arche, celle du centre plus grande et surelevee
    ("peek carousel") comme dans l'original. */
 .testimonial-photos {
+  position: relative;
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
@@ -401,6 +402,7 @@ a { color: inherit; text-decoration: none; }
 }
 .peek-photo { flex: 1 1 0; height: 260px; max-width: 320px; }
 .peek-photo.peek-center { height: 340px; max-width: 380px; z-index: 2; }
+.testimonial-dots { display: none; }
 
 /* ---------- Video Moment ---------- */
 .video-moment {
@@ -544,8 +546,35 @@ a { color: inherit; text-decoration: none; }
   .side-left, .side-right { display: none; }
   .service-row, .service-row.reverse { flex-direction: column; }
   .service-photo { flex-basis: auto; width: 100%; }
-  .peek-photo { display: none; }
-  .peek-photo.peek-center { display: flex; max-width: 280px; margin: 0 auto; }
+  /* Photos des avis : carrousel qu'on fait glisser au doigt */
+  .testimonial-photos {
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 1rem;
+    margin: 0 -1.5rem;
+    padding: 0 calc(50vw - 130px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .testimonial-photos::-webkit-scrollbar { display: none; }
+  .peek-photo,
+  .peek-photo.peek-center {
+    flex: 0 0 260px;
+    max-width: none;
+    height: 340px;
+    scroll-snap-align: center;
+  }
+  .testimonial-dots { display: flex; justify-content: center; gap: 0.6rem; margin-top: 1.4rem; }
+  .testimonial-dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--taupe);
+    transition: background 0.3s ease;
+  }
+  .testimonial-dots span.is-active { background: var(--ivory); border-color: var(--ivory); }
 
   /* Le libelle vertical provoque un debordement horizontal sur Safari iOS
      (bande blanche a gauche) : on le masque sur mobile. */

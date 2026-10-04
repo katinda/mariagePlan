@@ -69,6 +69,29 @@ document.querySelectorAll('.testimonial-nav button').forEach((btn) => {
   });
 });
 
+// Photos des avis sur mobile : on demarre sur la photo du milieu
+// et les points suivent la photo affichee pendant le glissement
+const peekTrack = document.querySelector('.testimonial-photos');
+const peekDots = document.querySelectorAll('.testimonial-dots span');
+if (peekTrack) {
+  const peeks = peekTrack.querySelectorAll('.peek-photo');
+  const centerOn = (el) => {
+    peekTrack.scrollLeft = el.offsetLeft - (peekTrack.clientWidth - el.offsetWidth) / 2;
+  };
+  const center = peekTrack.querySelector('.peek-center');
+  if (center && peekTrack.scrollWidth > peekTrack.clientWidth) centerOn(center);
+
+  peekTrack.addEventListener('scroll', () => {
+    const mid = peekTrack.scrollLeft + peekTrack.clientWidth / 2;
+    let active = 0;
+    peeks.forEach((el, i) => {
+      const elMid = el.offsetLeft + el.offsetWidth / 2;
+      if (Math.abs(elMid - mid) < Math.abs(peeks[active].offsetLeft + peeks[active].offsetWidth / 2 - mid)) active = i;
+    });
+    peekDots.forEach((d, i) => d.classList.toggle('is-active', i === active));
+  }, { passive: true });
+}
+
 // Formulaire newsletter : confirmation simple sans backend
 const newsletterForm = document.querySelector('.newsletter-form');
 if (newsletterForm) {

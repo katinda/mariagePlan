@@ -20,10 +20,18 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden; /* fallback */
+  overflow-x: clip;
+}
 
 body {
   margin: 0;
+  overflow-x: hidden; /* fallback */
+  overflow-x: clip;
+  width: 100%;
   font-family: var(--font-body);
   color: var(--text-dark);
   background: var(--cream);
@@ -103,6 +111,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.25em;
   text-transform: uppercase;
   border: 1px solid currentColor;
+  font-family: var(--font-body);
   transition: all 0.3s ease;
 }
 .btn-outline {
@@ -340,7 +349,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
 }
 .about-photo-wrap { display: flex; align-items: center; gap: 1.5rem; }
-.about-photo { width: 320px; height: 400px; }
+.about-photo { width: 320px; max-width: 100%; height: 400px; }
 .about-text { max-width: 480px; }
 .about-text .serif-heading { font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--taupe-dark); }
 .about-body { margin: 1.2em 0; }
@@ -401,6 +410,7 @@ a { color: inherit; text-decoration: none; }
 }
 .video-frame {
   width: 320px;
+  max-width: 100%;
   height: 560px;
   margin: 2rem auto 0;
   border-radius: 999px 999px 0 0;
@@ -538,6 +548,21 @@ a { color: inherit; text-decoration: none; }
   .service-photo { flex-basis: auto; width: 100%; }
   .peek-photo { display: none; }
   .peek-photo.peek-center { display: flex; max-width: 280px; margin: 0 auto; }
+
+  /* Le libelle vertical provoque un debordement horizontal sur Safari iOS
+     (bande blanche a gauche) : on le masque sur mobile. */
+  .about-photo-wrap .vertical-label { display: none; }
+  .about-photo-wrap { justify-content: center; }
+  .about-photo { margin: 0 auto; }
+  .about-text { margin: 0 auto; }
+  .about-photo-2 { max-width: 380px; margin: 0 auto; height: 420px; }
+
+  .intro-quote p { text-align: center; }
+  .intro-photo { width: 100%; max-width: 380px; margin: 0 auto; }
+
+  /* Services : photo toujours au-dessus, texte centre */
+  .service-row { gap: 2rem; padding: 3rem 1.5rem; text-align: center; }
+  .service-row .service-photo { order: -1; max-width: 380px; height: 420px; margin: 0 auto; }
 }
 
 @media (max-width: 640px) {
@@ -554,6 +579,18 @@ a { color: inherit; text-decoration: none; }
     gap: 1.2rem;
     align-items: center;
   }
-  .menu-toggle { display: flex; }
-  .nav-wrap { justify-content: flex-start; }
+  .menu-toggle { display: flex; right: 1.5rem; }
+  .nav-wrap { justify-content: flex-start; min-height: 3.4rem; }
+
+  /* Les <br> des titres creent des coupures bancales sur petit ecran */
+  .serif-heading br { display: none; }
+
+  .hero-subtitle { font-size: 1.2rem; }
+  .hero-tagline, .eyebrow { letter-spacing: 0.2em; }
+  /* l'espacement des lettres ajoute un vide apres le dernier caractere :
+     on le compense pour un centrage optique exact */
+  .hero-tagline, .eyebrow.center, .eyebrow-ivory { padding-left: 0.2em; }
+  .btn { padding-left: 2.45em; }
+
+  .footer-handle { font-size: 0.85rem; word-break: break-word; }
 }
